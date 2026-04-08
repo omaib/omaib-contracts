@@ -1,0 +1,12 @@
+adapter_id: dap-synthetic-demo
+benchmark_id: omaib-synthetic-demo
+version: 0.1.0
+
+standards_targets:
+  - "N/A — synthetic testing benchmark"
+
+mapping: []
+
+decision_gates:
+  pilot_to_limited: "N/A — internal testing only"
+  limited_to_scale: "N/A — internal testing only"

@@ -1,0 +1,125 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  release:
+    types: [published]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check validators/ tests/
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: pytest -v --tb=short
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+          pip install pytest-cov
+      - name: Run coverage
+        run: pytest -v --tb=short --cov=validators --cov-report=xml --cov-fail-under=50
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          flags: contracts
+          name: contracts-coverage
+          fail_ci_if_error: false
+
+  validate-synthetic-demo:
+    name: Validate Synthetic Demo (Gate 1)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: Validate synthetic demo adapter (must pass Gate 1)
+        run: omaib-validate-adapter examples/dap-synthetic-demo/
+      - name: Gate status
+        run: omaib-gate-status examples/dap-synthetic-demo/
+
+  # Verify the package builds and CLI is importable after a clean pip install
+  install-and-smoke:
+    name: Clean Install Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build wheel
+        run: |
+          pip install build
+          python -m build --wheel
+      - name: Install from wheel (no source)
+        run: |
+          pip install dist/*.whl
+      - name: CLI smoke test (installed package, no source)
+        run: |
+          # Schemas must be accessible as package data after pip install
+          omaib-validate-adapter examples/dap-synthetic-demo/
+
+  pii-scan:
+    name: PII Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run PII scan (self)
+        run: python scripts/pii_scan.py
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: [lint, test, coverage, validate-synthetic-demo, install-and-smoke, pii-scan]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/omaib-contracts
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build distribution
+        run: |
+          pip install build
+          python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

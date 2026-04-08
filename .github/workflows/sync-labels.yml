@@ -1,0 +1,45 @@
+# Sync standardised labels to this repo from .github/labels.yml.
+# Run manually from the Actions tab when labels.yml changes, or on first repo setup.
+
+name: Sync labels
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/labels.yml'
+
+jobs:
+  sync:
+    name: Sync GitHub labels
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync labels from labels.yml
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REPO="${{ github.repository }}"
+
+          python3 -c "
+          import yaml, json, sys
+          with open('.github/labels.yml') as f:
+              labels = yaml.safe_load(f)
+          for lbl in labels:
+              print(json.dumps(lbl))
+          " | while IFS= read -r line; do
+            NAME=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d.get('name',''))")
+            COLOR=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d.get('color',''))")
+            DESC=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(d.get('description',''))")
+            [ -z "$NAME" ] && continue
+            gh label create "$NAME" --repo "$REPO" --color "$COLOR" --description "$DESC" --force 2>/dev/null || \
+            gh label edit   "$NAME" --repo "$REPO" --color "$COLOR" --description "$DESC" 2>/dev/null || true
+          done
+
+          echo "Label sync complete."

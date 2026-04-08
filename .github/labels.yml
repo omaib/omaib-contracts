@@ -1,0 +1,101 @@
+# Standardised GitHub labels for omaib-contracts.
+# Apply with: gh workflow run sync-labels.yml --repo omaib/omaib-contracts
+
+# -- Adapter workflow ---------------------------------------------------------
+- name: adapter-registration
+  color: "0075ca"
+  description: "New PI adapter registration request"
+
+- name: adapter-failure
+  color: "d73a4a"
+  description: "Automated: PI adapter ingestion failure"
+
+- name: adapter-update
+  color: "e4e669"
+  description: "PI adapter update or re-registration"
+
+# -- Status -------------------------------------------------------------------
+- name: "status: pending"
+  color: "fbca04"
+  description: "Awaiting platform team action"
+
+- name: "status: approved"
+  color: "0e8a16"
+  description: "Approved and added to registry"
+
+- name: "status: rejected"
+  color: "d73a4a"
+  description: "Rejected — see issue comments for reason"
+
+# -- Type ---------------------------------------------------------------------
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Something is broken"
+
+- name: "type: enhancement"
+  color: "a2eeef"
+  description: "New feature or improvement"
+
+- name: "type: question"
+  color: "d876e3"
+  description: "Question or clarification needed"
+
+- name: "type: documentation"
+  color: "0075ca"
+  description: "Documentation update"
+
+# -- Priority -----------------------------------------------------------------
+- name: "priority: high"
+  color: "b60205"
+  description: "Needs urgent attention"
+
+- name: "priority: medium"
+  color: "fbca04"
+  description: "Normal priority"
+
+- name: "priority: low"
+  color: "cfd3d7"
+  description: "Low urgency"
+
+# -- Gate readiness -----------------------------------------------------------
+- name: gate-1
+  color: "c2e0c6"
+  description: "Gate 1 (>=60% score, all required files present)"
+
+- name: gate-2
+  color: "0075ca"
+  description: "Gate 2 (>=80% score, pilot eligible)"
+
+- name: gate-3
+  color: "6f42c1"
+  description: "Gate 3 (trust toolkit, convergence)"
+
+- name: gate-4
+  color: "e99695"
+  description: "Gate 4 (assurance crosswalk)"
+
+# -- Versioning ---------------------------------------------------------------
+- name: "semver: major"
+  color: "d73a4a"
+  description: "Breaking change — major version bump"
+
+- name: "semver: minor"
+  color: "fbca04"
+  description: "New feature — minor version bump"
+
+- name: "semver: patch"
+  color: "0e8a16"
+  description: "Bug fix or patch"
+
+- name: breaking-change
+  color: "d73a4a"
+  description: "Contains a breaking change"
+
+# -- Automation ---------------------------------------------------------------
+- name: automated
+  color: "e4e669"
+  description: "Created or managed by an automated workflow"
+
+- name: needs-review
+  color: "fbca04"
+  description: "Requires human review before action"

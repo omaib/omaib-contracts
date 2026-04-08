@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use the OMAIB contract schemas, please cite this repository."
+title: "OMAIB Contracts — Shared Schemas for the Open Multimodal AI Benchmark"
+version: "0.2.0"
+date-released: "2026-03-26"
+license: MIT
+repository-code: "https://github.com/omaib/omaib-contracts"
+authors:
+  - family-names: "Anjah"
+    given-names: "Charles"
+    affiliation: "University of Sheffield / UKOMAIN"
+keywords:
+  - benchmarking
+  - FAIR
+  - multimodal AI
+  - CDRF
+  - open science

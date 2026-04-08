@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omaib-contracts"
+version = "0.3.0"
+description = "OMAIB shared schemas, validators, and DAP templates (CDRF-aligned)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema>=4.21",
+  "pyyaml>=6.0",
+]
+authors = [
+  { name = "OMAIB Development Team" },
+]
+keywords = ["omaib", "benchmarking", "FAIR", "AI", "validation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://omaib.github.io"
+Repository = "https://github.com/omaib/omaib-contracts"
+Documentation = "https://github.com/omaib/omaib-contracts#readme"
+"Issue Tracker" = "https://github.com/omaib/omaib-contracts/issues"
+
+[project.scripts]
+omaib-validate-adapter = "validators.validate_adapter:main"
+omaib-gate-status = "validators.gate_readiness:main"
+omaib-init-adapter = "validators.init_adapter:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4",
+]
+
+# Ship the JSON schemas as package data so the CLI works after pip install
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["validators*"]
+
+[tool.setuptools.package-data]
+"validators" = ["schemas/*.json", "templates/*.yaml", "templates/*.json"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

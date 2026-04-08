@@ -1,0 +1,98 @@
+name: PI Adapter Registration
+description: Register your Domain Adapter Pack (DAP) with the OMAIB platform
+title: "[PI Registration] "
+labels: ["adapter-registration", "status: pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, confirm `omaib-validate-adapter omaib-adapter/` passes locally with **Gate 1 Ready: YES**.
+        See [PI_ONBOARDING.md](../PI_ONBOARDING.md) for the full guide.
+
+  - type: input
+    id: adapter_id
+    attributes:
+      label: Adapter ID
+      description: "Must match `adapter_id` in your `benchmark_contract.yaml` (format: `dap-<your-slug>`)"
+      placeholder: dap-alpha-benchmark
+    validations:
+      required: true
+
+  - type: input
+    id: repo_url
+    attributes:
+      label: Repository URL
+      description: Full HTTPS URL of your GitHub repository
+      placeholder: https://github.com/your-uni/your-project
+    validations:
+      required: true
+
+  - type: input
+    id: adapter_path
+    attributes:
+      label: Adapter path
+      description: Path to the omaib-adapter/ directory within the repo (relative to repo root)
+      placeholder: omaib-adapter
+      value: omaib-adapter
+    validations:
+      required: true
+
+  - type: input
+    id: github_handle
+    attributes:
+      label: GitHub handle
+      description: Your GitHub username (used for issue assignments and notifications)
+      placeholder: "@your-github-username"
+    validations:
+      required: true
+
+  - type: input
+    id: benchmark_id
+    attributes:
+      label: Benchmark ID
+      description: "From `benchmark_id` field in your `benchmark_contract.yaml`"
+      placeholder: omaib-benchmark
+    validations:
+      required: true
+
+  - type: input
+    id: tagged_release
+    attributes:
+      label: Tagged release
+      description: The Git tag you have pushed that is Gate 1 ready
+      placeholder: v0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: gate_score
+    attributes:
+      label: Gate 1 readiness score
+      description: Score reported by `omaib-validate-adapter`
+      placeholder: "93.8%"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: "`omaib-validate-adapter omaib-adapter/` passes with **Gate 1 Ready: YES**"
+          required: true
+        - label: "Tagged release is pushed to GitHub"
+          required: true
+        - label: "Repository is public, or platform team has been granted read access"
+          required: true
+        - label: "All `<placeholder>` and `TBD` values have been replaced in adapter files"
+          required: true
+        - label: "OMAIB GitHub App installed on adapter repository (enables direct failure-notification issues — install at https://github.com/apps/omaib-platform/installations/new)"
+          required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      description: Special access requirements, DUA considerations, or any context for the platform team
+    validations:
+      required: false

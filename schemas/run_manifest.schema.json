@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/run-manifest/v0.1.json",
+  "title": "OMAIB Run Manifest (v0.1)",
+  "description": "Reproducibility manifest generated for every evaluation run.",
+  "type": "object",
+  "required": [
+    "run_id",
+    "benchmark_id",
+    "adapter_id",
+    "timestamp",
+    "environment",
+    "inputs",
+    "outputs"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "benchmark_id": { "type": "string", "pattern": "^omaib-[a-z0-9-]+$" },
+    "adapter_id": { "type": "string", "pattern": "^dap-[a-z0-9-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "submitter": {
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "institution": { "type": "string" },
+        "method_name": { "type": "string" },
+        "method_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "required": ["container_image_digest", "dependency_lock_hash", "random_seeds"],
+      "properties": {
+        "container_image_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "Digest, not tag — tags are mutable"
+        },
+        "dependency_lock_hash": {
+          "type": "string",
+          "description": "SHA256 of the lock file"
+        },
+        "random_seeds": {
+          "type": "object",
+          "description": "All random seeds used: python, numpy, torch, etc.",
+          "additionalProperties": { "type": "integer" }
+        },
+        "hardware_profile": {
+          "type": "object",
+          "properties": {
+            "gpu": { "type": "string" },
+            "cpu": { "type": "string" },
+            "ram_gb": { "type": "number" }
+          }
+        },
+        "platform_version": { "type": "string" }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "required": ["dataset_version_hash", "task_id"],
+      "properties": {
+        "dataset_version_hash": { "type": "string" },
+        "task_id": { "type": "string" },
+        "split": { "type": "string", "enum": ["train", "val", "test", "held-out"] },
+        "adapter_version": { "type": "string" },
+        "metric_pack_version": { "type": "string" }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "required": ["scorecard_hash"],
+      "properties": {
+        "scorecard_hash": { "type": "string" },
+        "artifact_manifest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["filename", "hash"],
+            "properties": {
+              "filename": { "type": "string" },
+              "hash": { "type": "string" },
+              "size_bytes": { "type": "integer" }
+            }
+          }
+        },
+        "wall_clock_seconds": { "type": "number" }
+      }
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["omaib-run", "maintainer-run", "custodian-run", "participant-run"]
+    },
+    "signature": {
+      "type": "string",
+      "description": "Platform signature over the manifest for tamper detection"
+    }
+  },
+  "additionalProperties": false
+}

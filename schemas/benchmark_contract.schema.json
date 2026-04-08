@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/benchmark-contract/v0.2.json",
+  "title": "OMAIB Benchmark Contract (v0.2)",
+  "description": "Validates benchmark_contract.yaml files in Domain Adapter Packs.",
+  "type": "object",
+  "required": [
+    "adapter_id",
+    "benchmark_id",
+    "version",
+    "project",
+    "license",
+    "evaluation_modes",
+    "data_access",
+    "tasks",
+    "modalities",
+    "metrics",
+    "baselines",
+    "scorecard_policy",
+    "governance",
+    "dependencies"
+  ],
+  "properties": {
+    "adapter_id": {
+      "type": "string",
+      "pattern": "^dap-[a-z0-9-]+$",
+      "description": "Unique adapter identifier, must start with 'dap-'"
+    },
+    "benchmark_id": {
+      "type": "string",
+      "pattern": "^omaib-[a-z0-9-]+$",
+      "description": "Unique benchmark identifier, must start with 'omaib-'"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version"
+    },
+    "project": {
+      "type": "object",
+      "required": ["name", "pi_id", "org_id", "institutions"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "pi_id": { "type": "string", "minLength": 1, "description": "Opaque PI identifier (e.g. PI-001). No personal names or emails." },
+        "org_id": { "type": "string", "minLength": 1, "description": "Short organisation slug (e.g. oxford, brunel)." },
+        "institutions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "award_window": { "type": "string" }
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": ["code", "data"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "data": { "type": "string", "minLength": 1 }
+      }
+    },
+    "evaluation_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["public", "hidden-test", "maintainer-run", "custodian-run", "federated", "restricted"]
+      },
+      "minItems": 1
+    },
+    "data_access": {
+      "type": "object",
+      "required": ["model", "compute_location"],
+      "properties": {
+        "model": { "type": "string", "minLength": 1 },
+        "compute_location": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["task_id", "name", "description"],
+        "properties": {
+          "task_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      },
+      "minItems": 1
+    },
+    "modalities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["primary"],
+      "properties": {
+        "primary": { "type": "array", "items": { "type": "string" } },
+        "secondary": { "type": "array", "items": { "type": "string" } },
+        "acceptance_thresholds": { "type": "object" }
+      }
+    },
+    "baselines": {
+      "type": "object",
+      "required": ["provided", "reproducibility"],
+      "properties": {
+        "provided": { "type": "array", "items": { "type": "string" } },
+        "reproducibility": {
+          "type": "object",
+          "required": ["release", "containerised"],
+          "properties": {
+            "release": { "type": "array", "items": { "type": "string" } },
+            "containerised": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "scorecard_policy": {
+      "type": "object",
+      "required": ["public_fields", "restricted_fields"],
+      "properties": {
+        "public_fields": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "restricted_fields": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["export_rules"],
+      "properties": {
+        "custodian_boundary_owner": { "type": "string" },
+        "legal_basis": { "type": "string" },
+        "export_rules": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "red_lines": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "platform": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}

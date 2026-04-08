@@ -1,0 +1,76 @@
+adapter_id: dap-synthetic-demo
+benchmark_id: omaib-synthetic-demo
+version: 0.1.0
+
+project:
+  name: "Synthetic Demo Benchmark (platform integration testing)"
+  pi_id: "PLATFORM-TEAM"
+  org_id: "sheffield"
+  institutions:
+    - "University of Sheffield"
+  award_window: "N/A — internal testing"
+
+license:
+  code: "MIT"
+  data: "CC-BY-4.0"
+
+evaluation_modes:
+  - public
+
+data_access:
+  model: "open (synthetic data, no governance restrictions)"
+  compute_location: "omaib-run"
+
+tasks:
+  - task_id: synthetic_classification
+    name: "Synthetic multimodal classification"
+    description: "Classify synthetic samples from tabular + text modalities. Used for platform smoke tests."
+  - task_id: synthetic_regression
+    name: "Synthetic regression"
+    description: "Predict a continuous target from synthetic sensor streams."
+
+modalities:
+  - tabular
+  - text
+
+metrics:
+  primary:
+    - accuracy
+    - f1_macro
+  secondary:
+    - precision_macro
+    - recall_macro
+  acceptance_thresholds:
+    accuracy: 0.5
+
+baselines:
+  provided:
+    - random_baseline
+    - majority_class
+  reproducibility:
+    release:
+      - code
+      - config
+      - seeds
+    containerised: true
+
+scorecard_policy:
+  public_fields:
+    - overall_metrics_summary
+    - robustness_missing_modality
+  restricted_fields:
+    - per_sample_predictions
+
+governance:
+  custodian_boundary_owner: "OMAIB Platform Team"
+  legal_basis: "Synthetic data — no personal data"
+  export_rules:
+    - "All outputs are public — no restrictions"
+  red_lines:
+    - "None — synthetic data only"
+
+dependencies:
+  platform:
+    - benchmark_registry
+    - scorecard_service
+    - evaluator_runner

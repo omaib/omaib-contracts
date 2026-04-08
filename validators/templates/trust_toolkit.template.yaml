@@ -1,0 +1,26 @@
+# OMAIB Trust Toolkit Template (CDRF-Trust layer)
+# Copy to adapters/<project-slug>/trust_toolkit.yaml
+
+adapter_id: dap-<project-slug>
+benchmark_id: omaib-<benchmark-slug>
+version: 0.1.0
+
+stakeholder_groups:
+  - "<Group 1 — e.g., clinicians>"
+  - "<Group 2 — e.g., patients / residents / operators>"
+
+rubrics:
+  - rubric_id: R1
+    name: "Workflow compatibility"
+    fields:
+      - clarity
+      - actionability
+      - handoff_burden
+      - failure_criticality
+    scale: "1-5"
+    notes: "<Domain-specific notes>"
+
+sessions:
+  planned: 0
+  completed: 0
+  evidence_artifacts: []

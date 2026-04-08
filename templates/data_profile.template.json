@@ -1,0 +1,37 @@
+{
+  "_comment": "Copy to adapters/<project-slug>/data_profile.json and fill in all fields.",
+  "adapter_id": "dap-<project-slug>",
+  "benchmark_id": "omaib-<benchmark-slug>",
+  "version": "0.1.0",
+  "formats": ["<parquet | jsonl | csv | hdf5 | rosbag | dicom | etc.>"],
+  "provenance_fields": [
+    "source",
+    "collection_timestamp",
+    "site",
+    "sensor_id",
+    "checksum"
+  ],
+  "alignment": {
+    "time_reference": "<UTC | GPS | NTP | N/A>",
+    "sync_tolerance_ms": null
+  },
+  "missingness": {
+    "mask_field": "missing_mask",
+    "quality_flags_field": "quality_flags"
+  },
+  "modalities": ["<modality_1>", "<modality_2>"],
+  "sample_unit": "<Define what one sample / run contains — e.g., '1 minute of sensor data from one device'>",
+  "splits": {
+    "strategy": "<random | temporal | site-based | stratified>",
+    "ratios": { "train": 0.7, "val": 0.15, "test": 0.15 },
+    "leakage_controls": [
+      "<control 1>",
+      "<control 2>"
+    ]
+  },
+  "size_estimate": {
+    "samples": null,
+    "storage_gb": null,
+    "duration_hours": null
+  }
+}

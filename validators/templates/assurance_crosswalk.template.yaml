@@ -1,0 +1,21 @@
+# OMAIB Assurance Crosswalk Template (CDRF-Assure layer)
+# Copy to adapters/<project-slug>/assurance_crosswalk.yaml
+
+adapter_id: dap-<project-slug>
+benchmark_id: omaib-<benchmark-slug>
+version: 0.1.0
+
+standards_targets:
+  - "<Standard / Regulation 1 — e.g., MDR 2017/745>"
+  - "<Standard / Regulation 2 — e.g., GDPR>"
+
+mapping:
+  - evidence_field: overall_metrics_summary
+    control_id: "<Control ID>"
+    standard: "<Standard name>"
+    gate: "pilot"
+    notes: "<Notes on how this evidence satisfies the control>"
+
+decision_gates:
+  pilot_to_limited: "<Conditions required to move from pilot to limited deployment>"
+  limited_to_scale: "<Conditions required to move from limited to scaled deployment>"

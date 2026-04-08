@@ -1,0 +1,73 @@
+# OMAIB DAP Validation — GitHub Actions template for PI adapter repos
+#
+# Copy this file to .github/workflows/validate-dap.yml in your adapter repo.
+# It validates your omaib-adapter/ directory against OMAIB schemas on every
+# push and pull request, and on release tagging.
+#
+# Requirements:
+#   - Your adapter files must live in omaib-adapter/ at the repo root
+#     (benchmark_contract.yaml, data_profile.json, governance_policy.yaml,
+#      scorecard_schema.json)
+#   - No secrets or credentials needed — omaib-contracts is a public pip package
+
+name: OMAIB DAP Validation
+
+on:
+  push:
+    branches: ["main", "develop"]
+    paths:
+      - "omaib-adapter/**"
+      - ".github/workflows/validate-dap.yml"
+  pull_request:
+    paths:
+      - "omaib-adapter/**"
+  release:
+    types: [published]
+
+jobs:
+  validate-adapter:
+    name: Validate DAP (Gate 1)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install omaib-contracts
+        run: pip install git+https://github.com/omaib/omaib-contracts.git
+
+      - name: Validate adapter (Gate 1)
+        id: validate
+        run: |
+          omaib-validate-adapter omaib-adapter/ --json > validation_report.json
+          EXIT=$?
+          cat validation_report.json
+          echo "exit_code=$EXIT" >> "$GITHUB_OUTPUT"
+
+      - name: Gate status summary
+        run: omaib-gate-status omaib-adapter/
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: omaib-validation-report
+          path: validation_report.json
+          retention-days: 30
+
+      - name: Fail if Gate 1 not reached
+        if: steps.validate.outputs.exit_code != '0'
+        run: |
+          echo "::error::Adapter did not pass Gate 1 validation."
+          echo "::error::Run 'omaib-validate-adapter omaib-adapter/' locally to see details."
+          echo "::error::Install with: pip install git+https://github.com/omaib/omaib-contracts.git"
+          exit 1
+
+      - name: Gate 1 passed
+        if: steps.validate.outputs.exit_code == '0'
+        run: echo "::notice::Gate 1 PASSED. Adapter is ready for OMAIB platform ingestion."

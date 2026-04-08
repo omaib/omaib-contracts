@@ -1,0 +1,29 @@
+# OMAIB Governance Policy Template
+# Copy to adapters/<project-slug>/governance_policy.yaml and fill in all fields.
+
+adapter_id: dap-<project-slug>
+benchmark_id: omaib-<benchmark-slug>
+version: 0.1.0
+
+# access_tier options: open | registered | gated | custodian-only | hybrid | federated
+access_tier: gated
+
+# compute_location options: omaib-run | participant-run | custodian-run | hybrid | site-run
+compute_location: hybrid
+
+custodian_boundary:
+  controller: "<Data controller institution>"
+  processor: "<Data processor — e.g., OMAIB / University of Sheffield>"
+  approver_role: "<Role that approves exports — e.g., Data Governance Lead>"
+  environment_notes: "<Notes on the approved computing environment>"
+
+output_governance:
+  export_rules:
+    - "<Rule 1>"
+    - "<Rule 2>"
+  release_policy:
+    public_scorecard: true
+    restricted_scorecard: true
+    human_review_gate: true
+  red_lines:
+    - "<Absolute prohibition 1>"

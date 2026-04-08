@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/data-profile/v0.2.json",
+  "title": "OMAIB Data Profile (v0.2)",
+  "description": "Validates data_profile.json files in Domain Adapter Packs.",
+  "type": "object",
+  "required": [
+    "adapter_id",
+    "benchmark_id",
+    "version",
+    "formats",
+    "provenance_fields",
+    "modalities",
+    "sample_unit"
+  ],
+  "properties": {
+    "adapter_id": { "type": "string", "pattern": "^dap-[a-z0-9-]+$" },
+    "benchmark_id": { "type": "string", "pattern": "^omaib-[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "formats": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Data file formats (e.g., parquet, jsonl, csv, rosbag, hdf5)"
+    },
+    "provenance_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Fields that must appear in every data record for traceability"
+    },
+    "alignment": {
+      "type": "object",
+      "properties": {
+        "time_reference": { "type": "string" },
+        "sync_tolerance_ms": { "type": ["number", "null"] }
+      }
+    },
+    "missingness": {
+      "type": "object",
+      "properties": {
+        "mask_field": { "type": "string" },
+        "quality_flags_field": { "type": "string" }
+      }
+    },
+    "modalities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "sample_unit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What constitutes one sample or run in this dataset"
+    },
+    "splits": {
+      "type": "object",
+      "description": "Train/val/test split definitions",
+      "properties": {
+        "strategy": { "type": "string" },
+        "ratios": { "type": "object" },
+        "leakage_controls": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "size_estimate": {
+      "type": "object",
+      "properties": {
+        "samples": { "type": ["integer", "null"] },
+        "storage_gb": { "type": ["number", "null"] },
+        "duration_hours": { "type": ["number", "null"] }
+      }
+    }
+  },
+  "additionalProperties": false
+}

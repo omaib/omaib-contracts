@@ -1,0 +1,79 @@
+# OMAIB Benchmark Contract Template
+# Copy this file to adapters/<project-slug>/benchmark_contract.yaml and fill in all fields.
+# Replace all TBD values. Run: omaib-validate-adapter adapters/<project-slug>/
+
+adapter_id: dap-<project-slug>          # e.g., dap-critical-mm
+benchmark_id: omaib-<benchmark-slug>    # e.g., omaib-critical-mm
+version: 0.1.0
+
+project:
+  name: "<Full project name>"
+  pi_id: "<PI-NNN>"              # Opaque PI identifier — no personal names or emails
+  org_id: "<org-slug>"            # Short organisation slug (e.g. oxford, brunel)
+  institutions:
+    - "<University / Organisation 1>"
+    - "<University / Organisation 2>"
+  award_window: "<Start date – End date>"
+
+license:
+  code: "MIT"                   # Apache-2.0 or MIT recommended
+  data: "<license and constraints>"
+
+evaluation_modes:
+  - public                      # choose one or more: public, hidden-test, maintainer-run, custodian-run, federated, restricted
+
+data_access:
+  model: "<open | registered | gated | custodian-only | hybrid>"
+  compute_location: "<omaib-run | participant-run | custodian-run | hybrid>"
+
+tasks:
+  - task_id: <task_id_snake_case>
+    name: "<Human-readable task name>"
+    description: "<One-paragraph definition of the task, inputs, outputs, and evaluation condition.>"
+
+modalities:
+  - text             # include only what applies
+  - image
+  - audio
+  - video
+  - time_series
+  - tabular
+
+metrics:
+  primary:
+    - "<primary metric name>"
+  secondary:
+    - "<secondary metric name>"
+  acceptance_thresholds:
+    "<metric_name>": 0.0      # remove if not yet defined
+
+baselines:
+  provided:
+    - "<baseline name>"
+  reproducibility:
+    release:
+      - code
+      - config
+      - seeds
+    containerised: true
+
+scorecard_policy:
+  public_fields:
+    - overall_metrics_summary
+  restricted_fields:
+    - "<field restricted due to re-identification or governance risk>"
+
+governance:
+  custodian_boundary_owner: "<Institution / Role>"
+  legal_basis: "<contract | consent | legitimate_interests | public_task | DUA>"
+  export_rules:
+    - "<Rule 1 — e.g., no patient-level data exported>"
+  red_lines:
+    - "<Hard line — e.g., no raw clinical records to leave hospital boundary>"
+
+dependencies:
+  platform:
+    - benchmark_registry
+    - scorecard_service
+    - evaluator_runner
+    - policy_engine

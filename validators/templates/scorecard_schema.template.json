@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/<your-uni>/<your-project-name>/omaib-adapter/scorecard_schema.json",
+  "title": "<Project Name> Scorecard",
+  "description": "Defines the structure and public/restricted field policy for scorecard records produced by this benchmark.",
+  "type": "object",
+  "required": ["benchmark_id", "run_id", "model_id"],
+  "properties": {
+    "benchmark_id": {
+      "type": "string",
+      "description": "Identifies the benchmark this scorecard belongs to."
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Unique identifier for the evaluation run."
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Identifier of the model being evaluated."
+    }
+  },
+  "additionalProperties": true,
+  "$comment": "Add your benchmark-specific metric properties here. See scorecard_policy in benchmark_contract.yaml for public/restricted field declarations."
+}

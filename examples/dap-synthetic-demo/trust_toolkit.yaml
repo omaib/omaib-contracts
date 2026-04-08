@@ -1,0 +1,21 @@
+adapter_id: dap-synthetic-demo
+benchmark_id: omaib-synthetic-demo
+version: 0.1.0
+
+stakeholder_groups:
+  - "Platform developers (internal testing)"
+
+rubrics:
+  - rubric_id: R1
+    name: "Pipeline reliability"
+    fields:
+      - end_to_end_success
+      - reproducibility
+      - latency
+    scale: "pass/fail"
+    notes: "Used for platform smoke testing only"
+
+sessions:
+  planned: 0
+  completed: 0
+  evidence_artifacts: []

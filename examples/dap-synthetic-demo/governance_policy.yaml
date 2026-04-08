@@ -1,0 +1,22 @@
+adapter_id: dap-synthetic-demo
+benchmark_id: omaib-synthetic-demo
+version: 0.1.0
+
+access_tier: open
+compute_location: omaib-run
+
+custodian_boundary:
+  controller: "OMAIB Platform Team"
+  processor: "University of Sheffield AIRE"
+  approver_role: "Platform Lead"
+  environment_notes: "No governance constraints — synthetic data"
+
+output_governance:
+  export_rules:
+    - "All outputs are public"
+  release_policy:
+    public_scorecard: true
+    restricted_scorecard: false
+    human_review_gate: false
+  red_lines:
+    - "None"

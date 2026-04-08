@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/governance-policy/v0.2.json",
+  "title": "OMAIB Governance Policy (v0.2)",
+  "type": "object",
+  "required": [
+    "adapter_id",
+    "benchmark_id",
+    "version",
+    "access_tier",
+    "compute_location",
+    "output_governance"
+  ],
+  "properties": {
+    "adapter_id": { "type": "string", "pattern": "^dap-[a-z0-9-]+$" },
+    "benchmark_id": { "type": "string", "pattern": "^omaib-[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "access_tier": {
+      "type": "string",
+      "enum": ["open", "registered", "gated", "custodian-only", "hybrid", "federated"]
+    },
+    "compute_location": {
+      "type": "string",
+      "enum": ["omaib-run", "participant-run", "custodian-run", "hybrid", "site-run"]
+    },
+    "custodian_boundary": {
+      "type": "object",
+      "properties": {
+        "controller": { "type": "string" },
+        "processor": { "type": "string" },
+        "approver_role": { "type": "string" },
+        "environment_notes": { "type": "string" }
+      }
+    },
+    "output_governance": {
+      "type": "object",
+      "required": ["export_rules", "release_policy"],
+      "properties": {
+        "export_rules": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "release_policy": {
+          "type": "object",
+          "required": ["public_scorecard"],
+          "properties": {
+            "public_scorecard": { "type": "boolean" },
+            "restricted_scorecard": { "type": "boolean" },
+            "human_review_gate": { "type": "boolean" }
+          }
+        },
+        "red_lines": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}

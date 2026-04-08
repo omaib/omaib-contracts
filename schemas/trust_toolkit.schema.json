@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/trust-toolkit/v0.1.json",
+  "title": "OMAIB Trust Toolkit (v0.1)",
+  "description": "Validates trust_toolkit.yaml files in Domain Adapter Packs (CDRF-Trust layer).",
+  "type": "object",
+  "required": ["adapter_id", "benchmark_id", "version", "stakeholder_groups"],
+  "properties": {
+    "adapter_id": { "type": "string", "pattern": "^dap-[a-z0-9-]+$" },
+    "benchmark_id": { "type": "string", "pattern": "^omaib-[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "stakeholder_groups": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "rubrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rubric_id", "name", "fields", "scale"],
+        "properties": {
+          "rubric_id": { "type": "string" },
+          "name": { "type": "string" },
+          "fields": { "type": "array", "items": { "type": "string" } },
+          "scale": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "sessions": {
+      "type": "object",
+      "properties": {
+        "planned": { "type": "integer" },
+        "completed": { "type": "integer" },
+        "evidence_artifacts": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omaib.org/schemas/scorecard/v0.1.json",
+  "title": "OMAIB Scorecard (v0.1)",
+  "type": "object",
+  "required": [
+    "benchmark_id",
+    "run_id",
+    "timestamp",
+    "metrics",
+    "provenance",
+    "visibility"
+  ],
+  "properties": {
+    "benchmark_id": { "type": "string" },
+    "adapter_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["number", "string", "object", "array", "null"]
+      }
+    },
+    "diagnostics": { "type": "object" },
+    "provenance": {
+      "type": "object",
+      "required": ["metric_pack_version", "evaluator_image", "manifest_hash"],
+      "properties": {
+        "metric_pack_version": { "type": "string" },
+        "evaluator_image": { "type": "string" },
+        "manifest_hash": { "type": "string" },
+        "dataset_version": { "type": "string" }
+      }
+    },
+    "visibility": {
+      "type": "object",
+      "required": ["public_fields", "restricted_fields"],
+      "properties": {
+        "public_fields": { "type": "array", "items": { "type": "string" } },
+        "restricted_fields": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,48 @@
+name: PII Scan (reusable)
+# -----------------------------------------------------------------------
+# Reusable workflow — hosted in omaib-contracts, called by every repo in
+# the omaib GitHub organisation.
+#
+# Caller syntax (minimal, paste into any omaib repo's workflow):
+#
+#   jobs:
+#     pii-scan:
+#       uses: omaib/omaib-contracts/.github/workflows/pii-scan-reusable.yml@main
+#
+# The workflow checks out the *calling* repo, downloads the scanner from
+# omaib-contracts, then runs it against the calling repo's working tree.
+# -----------------------------------------------------------------------
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version for the scanner"
+        required: false
+        type: string
+        default: "3.12"
+
+jobs:
+  pii-scan:
+    name: PII compliance scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout calling repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Download pii_scan.py from omaib-contracts
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/omaib/omaib-contracts/main/scripts/pii_scan.py" \
+            -o pii_scan_tool.py
+
+      - name: Run PII scan
+        # Pass '.' so the scanner treats the checkout root as the repo root,
+        # regardless of the script's own location.
+        run: python pii_scan_tool.py .
