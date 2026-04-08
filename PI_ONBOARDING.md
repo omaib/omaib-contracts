@@ -174,18 +174,18 @@ The platform team will add your repo to the ingestion registry within 5 working 
 
 ---
 
-## Step 5b — Install the OMAIB GitHub App (one-time)
+## Step 5b — Install the OMAIB Platform Bot - GitHub App (one-time)
 
-> **Why?** The OMAIB platform opens failure-notification issues directly in your adapter repository when benchmark ingestion detects a problem. This requires the OMAIB Platform GitHub App to have `issues: write` access to your repo.
+> **Why?** The OMAIB platform opens failure-notification issues directly in your adapter repository when benchmark ingestion detects a problem. This requires the GitHub App (OMAIB Platform Bot) to have `contents: read-only` and `issues: read & write` access to your repo.
 
 **Install takes ~30 seconds:**
 
-1. Visit <https://github.com/apps/omaib-platform/installations/new>
+1. Visit <https://github.com/apps/omaib-platform-bot/installations/new>
 2. Select your organisation (or personal account)
 3. Under **Repository access**, choose **Only select repositories** and pick your adapter repo
 4. Click **Install**
 
-The app requests only `issues: write` permission — it never reads or modifies your code.
+The app requests `contents: read-only` and `issues: write` permission — it never reads or modifies your code.
 
 > **Optional but strongly recommended.** Without it, failure notifications are posted to the shared `omaib-contracts` tracker only; you will miss them unless you watch that repository.
 
@@ -202,8 +202,7 @@ git push origin v0.1.0
 
 The OMAIB platform polls registered repos every 6 hours for new tagged releases. Your adapter will be ingested, validated, and registered within the next polling cycle.
 
-You can also trigger immediate ingestion by posting to: 
-`POST /api/v1/ingestion/trigger/<your-adapter-id>` (requires an API token — request one from the platform team).
+You can also trigger immediate ingestion by posting to: `POST /api/v1/ingestion/trigger/<your-adapter-id>` (requires an API token — request one from the platform team).
 
 ---
 
