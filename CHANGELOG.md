@@ -5,16 +5,6 @@ Follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [SemVer](ht
 
 ## [Unreleased]
 
-## [0.3.1] — 2026-04-13
-
-### Changed
-- Changelog and release automation: add `changelog.yml`, `changelog-ci-config.json`, and `release.yml` workflows
-- Tighten `validate-dap.yml`: reliable exit-code capture, pinned install, gate summary always visible
-- Populate `dap-synthetic-demo` examples with full reference data for all six contract files
-- Update DAP templates and validator templates for consistency
-- Update PI_ONBOARDING.md and pi-registration issue template
-- Fix `pii_scan.py`
-
 ## [0.3.0] — 2026-03-29
 
 ### Added
