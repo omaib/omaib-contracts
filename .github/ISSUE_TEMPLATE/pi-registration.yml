@@ -86,7 +86,7 @@ body:
           required: true
         - label: "All `<placeholder>` and `TBD` values have been replaced in adapter files"
           required: true
-        - label: "OMAIB GitHub App installed on adapter repository (enables direct failure-notification issues — install at https://github.com/apps/omaib-platform/installations/new)"
+        - label: "OMAIB GitHub App installed on adapter repository (enables direct failure-notification issues — install at https://github.com/apps/omaib-platform-bot/installations/new)"
           required: false
 
   - type: textarea

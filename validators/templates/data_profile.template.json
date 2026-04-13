@@ -1,5 +1,5 @@
 {
-  "_comment": "Copy to adapters/<project-slug>/data_profile.json and fill in all fields.",
+  "_comment": "Copy to adapters/<project-slug>/data_profile.json and fill in all fields. Reference the OMAIB documentation for field definitions and examples: https://omaib.github.io/omaib-docs/onboarding/adapter-contracts",
   "adapter_id": "dap-<project-slug>",
   "benchmark_id": "omaib-<benchmark-slug>",
   "version": "0.1.0",
@@ -9,6 +9,7 @@
     "collection_timestamp",
     "site",
     "sensor_id",
+    "anonymisation_run_id",
     "checksum"
   ],
   "alignment": {

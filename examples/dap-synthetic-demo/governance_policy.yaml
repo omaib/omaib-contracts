@@ -2,21 +2,31 @@ adapter_id: dap-synthetic-demo
 benchmark_id: omaib-synthetic-demo
 version: 0.1.0
 
-access_tier: open
-compute_location: omaib-run
+# access_tier options: open | registered | gated | custodian-only | hybrid | federated
+access_tier: registered
+
+# compute_location options: omaib-run | participant-run | custodian-run | hybrid | site-run
+compute_location: participant-run
 
 custodian_boundary:
-  controller: "OMAIB Platform Team"
-  processor: "University of Sheffield AIRE"
-  approver_role: "Platform Lead"
-  environment_notes: "No governance constraints — synthetic data"
+  controller: "UKOMAIN"
+  processor: "OMAIB / University of Sheffield (evaluation infrastructure only)"
+  approver_role: "Data Governance Lead, UKOMAIN/OMAIB"
+  environment_notes: >
+    De-identified dataset released to registered evaluators under DUA.
+    Raw text remains within UKOMAIN boundary.
+    OMAIB platform receives aggregate scores only — no raw predictions exported.
 
 output_governance:
   export_rules:
-    - "All outputs are public"
+    - "Aggregate evaluation scores (macro-F1, routing accuracy) may be published publicly."
+    - "Per-class recall may only be released with written approval from the Data Governance Lead."
+    - "No raw model predictions, embeddings, or attention weights may be exported."
   release_policy:
     public_scorecard: true
-    restricted_scorecard: false
-    human_review_gate: false
+    restricted_scorecard: true
+    human_review_gate: true
   red_lines:
-    - "None"
+    - "No raw discharge summary text may leave the UKOMAIN boundary."
+    - "No patient identifier — direct or indirect — may appear in any exported artefact."
+    - "No model trained solely on this dataset may be released without governance approval."

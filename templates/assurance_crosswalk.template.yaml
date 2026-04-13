@@ -1,5 +1,7 @@
 # OMAIB Assurance Crosswalk Template (CDRF-Assure layer)
 # Copy to adapters/<project-slug>/assurance_crosswalk.yaml
+# Replace all TBD values. Run: omaib-validate-adapter adapters/<project-slug>/
+# Reference the OMAIB documentation for field definitions and examples: https://omaib.github.io
 
 adapter_id: dap-<project-slug>
 benchmark_id: omaib-<benchmark-slug>

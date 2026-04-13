@@ -1,4 +1,5 @@
 {
+  "$comment": "Add your benchmark-specific metric properties here. See scorecard_policy in benchmark_contract.yaml for public/restricted field declarations. Refer to OMAIB documentation for field definitions and examples: https://omaib.github.io/omaib-docs/onboarding/adapter-contracts",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/<your-uni>/<your-project-name>/omaib-adapter/scorecard_schema.json",
   "title": "<Project Name> Scorecard",
@@ -20,5 +21,4 @@
     }
   },
   "additionalProperties": true,
-  "$comment": "Add your benchmark-specific metric properties here. See scorecard_policy in benchmark_contract.yaml for public/restricted field declarations."
-}
+ }

@@ -1,76 +1,84 @@
-adapter_id: dap-synthetic-demo
-benchmark_id: omaib-synthetic-demo
-version: 0.1.0
+adapter_id: dap-synthetic-demo             # already filled by CLI
+benchmark_id: omaib-synthetic-demo         # already filled by CLI
+version: 0.1.0                             # start here; increment when you update
 
 project:
-  name: "Synthetic Demo Benchmark (platform integration testing)"
-  pi_id: "PLATFORM-TEAM"
-  org_id: "sheffield"
+  name: "My Acoustic Benchmark Project"   # ← full project name (readable, not an identifier)
+  pi_id: "<PI-NNN>"                       # ← opaque PI identifier, no personal names or emails
+                                           #   Leave as PI-NNN if you have not registered yet —
+                                           #   your PI-NNN is assigned by OMAIB during registration
+  org_id: "<org-slug>"                    # ← short organisation slug (e.g. "oxford", "brunel", "mit")
   institutions:
-    - "University of Sheffield"
-  award_window: "N/A — internal testing"
+    - "<University / Organisation>"
+  award_window: "<Start date - End date>" # ← funding period
 
 license:
   code: "MIT"
-  data: "CC-BY-4.0"
+  data: "UK Data Protection Act 2018, DUA signed with partner NHS trust. No raw patient data may leave the custodian boundary."
 
 evaluation_modes:
-  - public
+  - public                      # ← pick one or more modes that apply
+  # - hidden-test               # uncomment if the platform holds a hidden test set
+  # - maintainer-run            # uncomment if OMAIB maintainers run evaluation
+  # - custodian-run             # uncomment if the data custodian runs evaluation
+  # - federated                 # uncomment if evaluation runs inside your network boundary
+  # - restricted                # uncomment if access is restricted under a DUA or ethics agreement
 
 data_access:
-  model: "open (synthetic data, no governance restrictions)"
-  compute_location: "omaib-run"
+  model: "gated"                # ← open | registered | gated | custodian-only | hybrid
+  compute_location: "omaib-run" # ← omaib-run | participant-run | custodian-run | hybrid
 
 tasks:
-  - task_id: synthetic_classification
-    name: "Synthetic multimodal classification"
-    description: "Classify synthetic samples from tabular + text modalities. Used for platform smoke tests."
-  - task_id: synthetic_regression
-    name: "Synthetic regression"
-    description: "Predict a continuous target from synthetic sensor streams."
+  - task_id: <task_id_snake_case>         # ← snake_case identifier, e.g. acoustic_classification
+    name: "<Human-readable task name>"
+    description: >
+      One paragraph defining the task — what inputs the model receives,
+      what the model must predict or produce, and the evaluation condition.
 
 modalities:
+  - text             # include only what applies
+  - image
+  - audio
+  - video
+  - time_series
   - tabular
-  - text
 
 metrics:
   primary:
-    - accuracy
-    - f1_macro
+    - macro_f1                      # ← list at least one primary ranking metric
   secondary:
-    - precision_macro
-    - recall_macro
-  acceptance_thresholds:
-    accuracy: 0.5
+    - routing_accuracy
+    - per_class_recall
+  acceptance_thresholds:        # OPTIONAL — remove if not yet defined
+    macro_f1: 0.72
 
 baselines:
   provided:
-    - random_baseline
-    - majority_class
+    - "<Baseline name>"                   # ← e.g., "Random (majority class)"
   reproducibility:
     release:
       - code
       - config
       - seeds
-    containerised: true
+    containerised: true                   # ← true if you provide a Docker image
 
 scorecard_policy:
   public_fields:
-    - overall_metrics_summary
-    - robustness_missing_modality
+    - overall_metrics_summary             # ← fields shown on the public leaderboard
   restricted_fields:
-    - per_sample_predictions
+    - "<field with re-identification risk>" # ← use empty list if none
 
 governance:
-  custodian_boundary_owner: "OMAIB Platform Team"
-  legal_basis: "Synthetic data — no personal data"
+  custodian_boundary_owner: "<Institution / Role>"
+  legal_basis: "legitimate_interests"    # ← contract | consent | legitimate_interests | public_task | DUA
   export_rules:
-    - "All outputs are public — no restrictions"
+    - "<Rule 1 — e.g., no patient-level data exported>"
   red_lines:
-    - "None — synthetic data only"
+    - "<Hard line — e.g., no raw clinical records to leave hospital boundary>"
 
 dependencies:
   platform:
     - benchmark_registry
     - scorecard_service
     - evaluator_runner
+    - policy_engine
