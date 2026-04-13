@@ -5,6 +5,18 @@ Follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [SemVer](ht
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-04-13
+
+### Added
+- Changelog/release automation: `changelog.yml`, `release.yml`, `sync-labels.yml`, `changelog-ci-config.json`, `labels.yml`
+- Fork-guard on changelog CI job; full PR trigger types; `permissions: contents/pull-requests: write`
+- PI onboarding guide (`PI_ONBOARDING.md`) and documentation updates
+- `pii_scan.py` stub + `pii-scan.yml` reusable workflow fixes
+
+### Fixed
+- `benchmark_contract.yaml` example: replaced `<task_id_snake_case>` placeholder with valid `acoustic_classification` identifier
+- `validate-dap.yml` template: corrected for private-repo schema access
+
 ## [0.3.0] — 2026-03-29
 
 ### Added
