@@ -29,7 +29,7 @@ data_access:
   compute_location: "omaib-run" # ← omaib-run | participant-run | custodian-run | hybrid
 
 tasks:
-  - task_id: <task_id_snake_case>         # ← snake_case identifier, e.g. acoustic_classification
+  - task_id: acoustic_classification      # snake_case identifier
     name: "<Human-readable task name>"
     description: >
       One paragraph defining the task — what inputs the model receives,

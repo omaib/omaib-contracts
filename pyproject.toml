@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "omaib-contracts"
-version = "0.3.0"
+version = "0.3.1"
 description = "OMAIB shared schemas, validators, and DAP templates (CDRF-aligned)"
 readme = "README.md"
 license = { text = "MIT" }
