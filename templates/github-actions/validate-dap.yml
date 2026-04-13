@@ -39,17 +39,20 @@ jobs:
           python-version: "3.12"
 
       - name: Install omaib-contracts
-        run: pip install git+https://github.com/omaib/omaib-contracts.git
+        run: pip install git+https://github.com/omaib/omaib-contracts.git@v0.3.0
 
       - name: Validate adapter (Gate 1)
         id: validate
         run: |
+          set +e
           omaib-validate-adapter omaib-adapter/ --json > validation_report.json
           EXIT=$?
+          set -e
           cat validation_report.json
           echo "exit_code=$EXIT" >> "$GITHUB_OUTPUT"
 
       - name: Gate status summary
+        if: always()
         run: omaib-gate-status omaib-adapter/
 
       - name: Upload validation report

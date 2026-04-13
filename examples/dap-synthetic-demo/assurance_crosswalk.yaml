@@ -3,10 +3,33 @@ benchmark_id: omaib-synthetic-demo
 version: 0.1.0
 
 standards_targets:
-  - "N/A — synthetic testing benchmark"
+  - "UK GDPR / Data Protection Act 2018"
+  - "NHS Data Security and Protection Toolkit (DSPT)"
+  - "MHRA AI/ML SaMD Guidance (2024)"
 
-mapping: []
+mapping:
+  - evidence_field: overall_metrics_summary
+    control_id: "DSPT-DSP9"
+    standard: "NHS Data Security and Protection Toolkit"
+    gate: "pilot"
+    notes: "Aggregate performance metrics (macro-F1, routing accuracy) demonstrate model utility without exposing patient-level data."
+
+  - evidence_field: macro_f1
+    control_id: "MHRA-SaMD-4.2"
+    standard: "MHRA AI/ML SaMD Guidance 2024"
+    gate: "pilot"
+    notes: "Primary metric for clinical performance threshold — must meet acceptance threshold (0.72) before limited deployment."
+
+  - evidence_field: governance_policy
+    control_id: "GDPR-Art30"
+    standard: "UK GDPR"
+    gate: "pilot"
+    notes: "Governance policy documents the processing activity record (controller, processor, legal basis, data flows) required under Article 30."
 
 decision_gates:
-  pilot_to_limited: "N/A — internal testing only"
-  limited_to_scale: "N/A — internal testing only"
+  pilot_to_limited: >
+    macro_f1 >= 0.72 on held-out test split; Data Governance Lead sign-off on per-class
+    recall release; at least one completed stakeholder session with ward administrators.
+  limited_to_scale: >
+    External clinical audit completed; MHRA SaMD classification confirmed; DUA renewed
+    for multi-site deployment; reproducibility manifests (code, config, seeds) published.

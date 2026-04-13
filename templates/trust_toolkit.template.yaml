@@ -1,5 +1,7 @@
 # OMAIB Trust Toolkit Template (CDRF-Trust layer)
-# Copy to adapters/<project-slug>/trust_toolkit.yaml
+# Copy to adapters/<project-slug>/trust_toolkit.yaml and fill in all fields.
+# Replace all TBD values. Run: omaib-validate-adapter adapters/<project-slug>/
+# Reference the OMAIB documentation for field definitions and examples: https://omaib.github.io/omaib-docs/onboarding/adapter-contracts
 
 adapter_id: dap-<project-slug>
 benchmark_id: omaib-<benchmark-slug>

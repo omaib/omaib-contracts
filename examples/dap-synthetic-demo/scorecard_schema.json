@@ -1,37 +1,48 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://omaib.org/schemas/scorecard/v0.1.json",
-  "title": "OMAIB Scorecard (v0.1)",
+  "$id": "https://github.com/omaib/omaib-contracts/examples/dap-synthetic-demo/scorecard_schema.json",
+  "title": "Synthetic Demo Scorecard",
+  "description": "Defines the structure and public/restricted field policy for scorecard records produced by this benchmark.",
   "type": "object",
-  "required": ["benchmark_id", "run_id", "timestamp", "metrics", "provenance", "visibility"],
+  "required": ["benchmark_id", "run_id", "model_id", "macro_f1", "routing_accuracy"],
   "properties": {
-    "benchmark_id": { "type": "string" },
-    "adapter_id": { "type": "string" },
-    "run_id": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" },
-    "metrics": {
-      "type": "object",
-      "additionalProperties": { "type": ["number", "string", "object", "array", "null"] }
+    "benchmark_id": {
+      "type": "string",
+      "description": "Identifies the benchmark this scorecard belongs to. Must be 'omaib-synthetic-demo'."
     },
-    "diagnostics": { "type": "object" },
-    "provenance": {
+    "run_id": {
+      "type": "string",
+      "description": "Unique identifier for the evaluation run (e.g. 'run-2026-04-01-001')."
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Identifier of the model being evaluated (e.g. 'clinicalbert-finetuned-v2')."
+    },
+    "macro_f1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Macro-averaged F1 score across all seven routing categories. Public field."
+    },
+    "routing_accuracy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Top-1 routing label accuracy across the test split. Public field."
+    },
+    "per_class_recall": {
       "type": "object",
-      "required": ["metric_pack_version", "evaluator_image", "manifest_hash"],
-      "properties": {
-        "metric_pack_version": { "type": "string" },
-        "evaluator_image": { "type": "string" },
-        "manifest_hash": { "type": "string" },
-        "dataset_version": { "type": "string" }
+      "description": "Per-category recall scores. Restricted field — requires Data Governance Lead approval to release.",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
       }
     },
-    "visibility": {
-      "type": "object",
-      "required": ["public_fields", "restricted_fields"],
-      "properties": {
-        "public_fields": { "type": "array", "items": { "type": "string" } },
-        "restricted_fields": { "type": "array", "items": { "type": "string" } }
-      }
-    },
-    "notes": { "type": "string" }
-  }
+    "overall_metrics_summary": {
+      "type": "string",
+      "description": "Free-text summary of overall performance for the public leaderboard entry."
+    }
+  },
+  "additionalProperties": false
 }

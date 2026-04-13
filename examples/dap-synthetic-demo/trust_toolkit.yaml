@@ -3,19 +3,33 @@ benchmark_id: omaib-synthetic-demo
 version: 0.1.0
 
 stakeholder_groups:
-  - "Platform developers (internal testing)"
+  - "Clinical informatics leads (routing decision-makers)"
+  - "NHS ward administrators (end users of routing output)"
+  - "Information governance officers"
+  - "Clinical NLP researchers"
 
 rubrics:
   - rubric_id: R1
-    name: "Pipeline reliability"
+    name: "Routing output clarity"
     fields:
-      - end_to_end_success
-      - reproducibility
-      - latency
-    scale: "pass/fail"
-    notes: "Used for platform smoke testing only"
+      - clarity
+      - actionability
+      - handoff_burden
+      - failure_criticality
+    scale: "1-5"
+    notes: "Assess whether the routing label and confidence score are interpretable by ward staff without clinical NLP expertise."
+
+  - rubric_id: R2
+    name: "Governance transparency"
+    fields:
+      - data_sharing_clarity
+      - consent_explainability
+      - audit_trail_legibility
+    scale: "1-5"
+    notes: "Assess whether the DUA terms and data flow are clearly communicated to participating institutions."
 
 sessions:
-  planned: 0
-  completed: 0
-  evidence_artifacts: []
+  planned: 3
+  completed: 1
+  evidence_artifacts:
+    - "stakeholder_workshop_2026-04-14_notes.pdf"

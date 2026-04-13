@@ -1,0 +1,66 @@
+# Runs on a merged release PR and creates a git tag + GitHub Release.
+# Trigger PR title format: "Release vX.Y.Z (omaib-contracts)"
+
+name: release
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  create-release:
+    name: Create release
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.title, 'Release v') &&
+      endsWith(github.event.pull_request.title, '(omaib-contracts)')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from PR title
+        id: version
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          VERSION=$(echo "$TITLE" | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+')
+          if [[ -z "$VERSION" ]]; then
+            echo "::error::Could not extract semver from PR title: $TITLE"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Verify pyproject.toml version
+        run: |
+          EXPECTED="${{ steps.version.outputs.version }}"
+          EXPECTED_NUM="${EXPECTED#v}"
+          ACTUAL=$(grep -m1 '^version' pyproject.toml | sed 's/.*= *"\(.*\)"/\1/')
+          if [[ "$ACTUAL" != "$EXPECTED_NUM" ]]; then
+            echo "::error::pyproject.toml version ($ACTUAL) does not match PR title version ($EXPECTED_NUM)"
+            exit 1
+          fi
+          echo "Verified: pyproject.toml version = $ACTUAL"
+
+      - name: Create and push tag
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          gh release create "$VERSION" \
+            --title "Release $VERSION" \
+            --notes-file CHANGELOG.md \
+            --verify-tag

@@ -1,6 +1,7 @@
 # OMAIB Benchmark Contract Template
 # Copy this file to adapters/<project-slug>/benchmark_contract.yaml and fill in all fields.
 # Replace all TBD values. Run: omaib-validate-adapter adapters/<project-slug>/
+# Reference the OMAIB documentation for field definitions and examples: https://omaib.github.io/omaib-docs/onboarding/adapter-contracts
 
 adapter_id: dap-<project-slug>          # e.g., dap-critical-mm
 benchmark_id: omaib-<benchmark-slug>    # e.g., omaib-critical-mm
@@ -8,7 +9,9 @@ version: 0.1.0
 
 project:
   name: "<Full project name>"
-  pi_id: "<PI-NNN>"              # Opaque PI identifier — no personal names or emails
+  pi_id: "<PI-NNN>"                       # ← opaque PI identifier, no personal names or emails
+                                           #   Leave as PI-NNN if you have not registered yet —
+                                           #   your PI-NNN is assigned by OMAIB during registration
   org_id: "<org-slug>"            # Short organisation slug (e.g. oxford, brunel)
   institutions:
     - "<University / Organisation 1>"
@@ -21,6 +24,11 @@ license:
 
 evaluation_modes:
   - public                      # choose one or more: public, hidden-test, maintainer-run, custodian-run, federated, restricted
+  # - hidden-test               # uncomment if the platform holds a hidden test set
+  # - maintainer-run            # uncomment if OMAIB maintainers run evaluation
+  # - custodian-run             # uncomment if the data custodian runs evaluation
+  # - federated                 # uncomment if evaluation runs inside your network boundary
+  # - restricted                # uncomment if access is restricted under a DUA or ethics agreement
 
 data_access:
   model: "<open | registered | gated | custodian-only | hybrid>"
@@ -41,21 +49,21 @@ modalities:
 
 metrics:
   primary:
-    - "<primary metric name>"
+    - "<primary metric name>"   # e.g., accuracy, F1, AUROC, BLEU, ROUGE, etc. Use standard names where possible.
   secondary:
     - "<secondary metric name>"
   acceptance_thresholds:
-    "<metric_name>": 0.0      # remove if not yet defined
+    "<metric_name>": 0.0      # e.g., rmse:0.5, accuracy:0.8. Remove if not yet defined
 
 baselines:
   provided:
-    - "<baseline name>"
+    - "<baseline name>"     # e.g., random_baseline, majority_class, simple_heuristic. Remove if no baselines provided.
   reproducibility:
     release:
       - code
       - config
       - seeds
-    containerised: true
+    containerised: true    # Set to true if you will provide a reference container for reproducibility e.g., a Docker image. Otherwise, set to false or remove.
 
 scorecard_policy:
   public_fields:
@@ -73,7 +81,7 @@ governance:
 
 dependencies:
   platform:
-    - benchmark_registry
+    - benchmark_registry    # List any platform services your adapter depends on, e.g., benchmark_registry, scorecard_service, evaluator_runner, policy_engine, etc.
     - scorecard_service
     - evaluator_runner
     - policy_engine

@@ -322,4 +322,4 @@ See: [templates/assurance_crosswalk.template.yaml](templates/assurance_crosswalk
 
 - Open a GitHub issue: [https://github.com/omaib/omaib-contracts/issues](https://github.com/omaib/omaib-contracts/issues)
 - Platform status: [https://omaib.github.io/status](https://omaib.github.io/status)
-- Contact: `omaib-platform@sheffield.ac.uk`
+- Contact: `ukomain.contact@gmail.com` and `omaib-ukomain-group@sheffield.ac.uk`

@@ -2,29 +2,32 @@
   "adapter_id": "dap-synthetic-demo",
   "benchmark_id": "omaib-synthetic-demo",
   "version": "0.1.0",
-  "formats": ["parquet", "jsonl"],
-  "provenance_fields": ["source", "generation_timestamp", "seed", "checksum"],
+  "formats": ["wav", "csv"],
+  "provenance_fields": [
+    "source",
+    "collection_timestamp",
+    "site",
+    "sensor_id",
+    "checksum"
+  ],
   "alignment": {
-    "time_reference": "N/A (synthetic — no temporal alignment needed)",
+    "time_reference": "<UTC | GPS | NTP | N/A>",
     "sync_tolerance_ms": null
   },
   "missingness": {
     "mask_field": "missing_mask",
     "quality_flags_field": "quality_flags"
   },
-  "modalities": ["tabular", "text"],
-  "sample_unit": "One row in the parquet file = one sample with all modality columns present",
+  "modalities": ["audio", "tabular"],
+  "sample_unit": "1 recording session from a single microphone array",
   "splits": {
-    "strategy": "random stratified",
+    "strategy": "temporal",
     "ratios": { "train": 0.7, "val": 0.15, "test": 0.15 },
-    "leakage_controls": [
-      "no sample overlap across splits",
-      "stratified by target class"
-    ]
+    "leakage_controls": ["No overlap between recording dates across splits"]
   },
   "size_estimate": {
-    "samples": 10000,
-    "storage_gb": 0.05,
+    "samples": 12000,
+    "storage_gb": 45.0,
     "duration_hours": null
   }
 }

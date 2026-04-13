@@ -41,8 +41,8 @@ EXCLUDED_DIRS = {".venv", "backup", ".git", "__pycache__", "*.egg-info"}
 # Functional / role email addresses that are explicitly allowed
 ALLOWED_EMAILS: frozenset[str] = frozenset(
     {
-        "omaib-platform@sheffield.ac.uk",
-        "omaib-security@sheffield.ac.uk",
+        "omaib-ukomain-group@sheffield.ac.uk",
+        "ukomain.contact@gmail.com",
     }
 )
 

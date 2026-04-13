@@ -21,6 +21,10 @@ on:
         required: false
         type: string
         default: "3.12"
+    secrets:
+      contracts_token:
+        description: "Fine-grained PAT with read access to omaib-contracts (required for private repo download)"
+        required: true
 
 jobs:
   pii-scan:
@@ -39,7 +43,8 @@ jobs:
       - name: Download pii_scan.py from omaib-contracts
         run: |
           curl -fsSL \
-            "https://raw.githubusercontent.com/omaib/omaib-contracts/main/scripts/pii_scan.py" \
+            -H "Authorization: token ${{ secrets.contracts_token }}" \
+            "https://raw.githubusercontent.com/omaib/omaib-contracts/develop/scripts/pii_scan.py" \
             -o pii_scan_tool.py
 
       - name: Run PII scan
