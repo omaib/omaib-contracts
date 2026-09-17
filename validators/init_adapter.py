@@ -32,7 +32,6 @@ import importlib.resources as _pkg_resources
 import sys
 from pathlib import Path
 
-
 # Map from template filename -> final (output) filename
 _TEMPLATE_MAP: dict[str, str] = {
     "benchmark_contract.template.yaml": "benchmark_contract.yaml",

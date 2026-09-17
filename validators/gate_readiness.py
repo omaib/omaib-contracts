@@ -24,7 +24,6 @@ from pathlib import Path
 
 from .validate_adapter import AdapterReport, validate_adapter
 
-
 GATE_1_MIN_SCORE = 60.0
 GATE_2_MIN_SCORE = 80.0
 
