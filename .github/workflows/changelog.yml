@@ -13,6 +13,16 @@ jobs:
     # Fork PRs cannot push a commit back to the head branch; skip for forks.
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    # Job-level (not step-level) continue-on-error: saadmk11/changelog-ci's
+    # bundled Docker image is pinned to python:3.12-slim-bullseye (Debian 11),
+    # whose security-archive packages get pruned from deb.debian.org over
+    # time, breaking `apt-get install` inside the action's own image build.
+    # GitHub Actions does not apply step-level continue-on-error to failures
+    # that occur while *building* a container action's image (only to
+    # failures during its execution), so this optional, non-blocking check
+    # was still reported as failed. Job-level continue-on-error is
+    # unaffected by that limitation.
+    continue-on-error: true
     permissions:
       contents: write
       pull-requests: write
