@@ -11,8 +11,8 @@ Key invariants tested:
 
 from pathlib import Path
 
-from validators.validate_adapter import validate_adapter
 from validators.gate_readiness import compute_gate_status
+from validators.validate_adapter import validate_adapter
 
 SYNTHETIC_DEMO = Path(__file__).parent.parent / "examples" / "dap-synthetic-demo"
 

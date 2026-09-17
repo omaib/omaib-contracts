@@ -24,8 +24,8 @@ Exit codes:
 
 import json
 import sys
-from pathlib import Path
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import yaml
 
@@ -41,7 +41,10 @@ except ImportError:
 try:
     from importlib.resources import files as _resource_files
     SCHEMA_DIR = _resource_files("validators") / "schemas"
-except Exception:
+except Exception:  # noqa: BLE001 — resolving package resources can fail in several
+    # different, install-state-dependent ways (ModuleNotFoundError, TypeError from an
+    # unexpected Traversable implementation, etc.); this runs at import time, so any
+    # uncaught exception here would break importing this module entirely.
     # Hard fallback — running directly from source without install
     SCHEMA_DIR = Path(__file__).parent / "schemas"
 
@@ -62,7 +65,9 @@ def _schema_exists(schema_path) -> bool:
     """
     try:
         return schema_path.is_file()
-    except Exception:
+    except Exception:  # noqa: BLE001 — different Traversable implementations (wheel vs.
+        # source installs) can raise different, implementation-specific exceptions here;
+        # falling back to a plain Path check is the intended behavior for all of them.
         return Path(str(schema_path)).is_file()
 
 
@@ -177,9 +182,7 @@ def find_tbd_fields(data, prefix: str = "") -> list:
     if isinstance(data, dict):
         for k, v in data.items():
             path = f"{prefix}.{k}" if prefix else k
-            if isinstance(v, str) and v.strip() in TBD_MARKERS:
-                tbds.append(path)
-            elif isinstance(v, str) and v.strip().upper().startswith("TBD"):
+            if isinstance(v, str) and v.strip() in TBD_MARKERS or isinstance(v, str) and v.strip().upper().startswith("TBD"):
                 tbds.append(path)
             else:
                 tbds.extend(find_tbd_fields(v, path))
@@ -245,7 +248,7 @@ def validate_file(adapter_dir: Path, filename: str, schema_filename: str) -> Fil
     try:
         data = load_file(filepath)
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    except Exception as e:
+    except (OSError, ValueError, yaml.YAMLError) as e:
         report.errors.append(f"Parse error: {e}")
         return report
 
@@ -294,7 +297,7 @@ def validate_schema_def_file(adapter_dir: Path, filename: str) -> FileReport:
 
     try:
         data = json.loads(filepath.read_text(encoding="utf-8"))
-    except Exception as e:
+    except (OSError, ValueError) as e:
         report.errors.append(f"JSON parse error: {e}")
         return report
 
