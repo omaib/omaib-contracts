@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 omaib-validate-adapter: CLI and library for validating OMAIB Domain Adapter Packs.
 
